@@ -45,8 +45,64 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        permissiongranter()
+        tm = getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+        cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        db = AppDatabase.getAppDataBase(context = this)
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        val Actionbutton : Button = findViewById(R.id.info_button)
+        val Mapbutton : Button = findViewById(R.id.map_btn)
+        val text2 : TextView = findViewById(R.id.text2)
+        Actionbutton.setOnClickListener{
+            if (repeat==0){
+                getLastLocation()
+                repeat=1
+                text2.text = "Grabing Data ..."
+            }else{
+                repeat=0
+                text2.text = "Process paused."
+            }
+
+        }
+        spinner = findViewById<View>(R.id.areaspinner) as Spinner
+        val adapter = ArrayAdapter.createFromResource(
+            this,
+            R.array.map_filters,
+            android.R.layout.simple_spinner_dropdown_item
+        )
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinner.adapter = adapter
+
+        spinner.onItemSelectedListener = this
+
+
+        Mapbutton.setOnClickListener{
+            var intent = Intent(this,MapActivity::class.java)
+            intent.putExtra("index", list_position)
+            startActivity(intent)
+        }
+
+        handler.postDelayed(object : Runnable {
+            override fun run() {
+                if (repeat == 1){
+                    getinfo()
+                }
+                handler.postDelayed(this, delayer.toLong())
+            }
+        }, delayer.toLong())
+
     }
 
+    override fun onPause() {
+        super.onPause()
+        repeat =0
+    }
+
+    override fun onStop() {
+        super.onStop()
+        repeat=0
+    }
 
     private fun isLocationEnabled(): Boolean {
         var locationManager: LocationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
@@ -173,5 +229,101 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
                 }
 
             }).check()
+    }
+    private fun getNetworkClass(): String {
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            permissiongranter()
+        }
+        val networkType = tm.getDataNetworkType()
+        when (networkType) {
+            TelephonyManager.NETWORK_TYPE_GPRS -> return "GPRS(2G)"
+            TelephonyManager.NETWORK_TYPE_GSM -> return "GSM(2G)"
+            TelephonyManager.NETWORK_TYPE_EDGE -> return "EDGE(2G)"
+            TelephonyManager.NETWORK_TYPE_CDMA -> return "CDMA(2G)"
+            TelephonyManager.NETWORK_TYPE_1xRTT -> return "1XRTT(2G)"
+            TelephonyManager.NETWORK_TYPE_IDEN -> return "IDEN(2G)"
+            TelephonyManager.NETWORK_TYPE_UMTS -> return "UMTS(3G)"
+            TelephonyManager.NETWORK_TYPE_TD_SCDMA -> return "TD_SCDMA(3G)"
+            TelephonyManager.NETWORK_TYPE_EVDO_0-> return "EVDO_0(3G)"
+            TelephonyManager.NETWORK_TYPE_EVDO_A-> return "EVDO_A(3G)"
+            TelephonyManager.NETWORK_TYPE_HSDPA-> return "HSDPA(3G)"
+            TelephonyManager.NETWORK_TYPE_HSUPA-> return "HSUPA(3G)"
+            TelephonyManager.NETWORK_TYPE_HSPA-> return "HSPA(3G)"
+            TelephonyManager.NETWORK_TYPE_EVDO_B-> return "EVDO_B(3G)"
+            TelephonyManager.NETWORK_TYPE_EHRPD-> return "EHRPD(3G)"
+            TelephonyManager.NETWORK_TYPE_HSPAP -> return "HSPAP(3G)"
+            TelephonyManager.NETWORK_TYPE_LTE -> return "LTE(4G)"
+            TelephonyManager.NETWORK_TYPE_UNKNOWN -> return "Unknown"
+            else -> return "No network"
+        }
+    }
+    private fun getCellInfo(cellInfo: CellInfo): HashMap<Any? ,String?> {
+        var netclass = getNetworkClass()
+        Log.d("MyActivity",netclass)
+        var map = hashMapOf<Any?, String?>()
+        if (cellInfo is CellInfoGsm) {
+            val cellIdentityGsm = cellInfo.cellIdentity
+            val cellSignalGsm = cellInfo.cellSignalStrength
+            map["cell_identity"]=cellIdentityGsm.cid.toString()
+            map["MCC"]=cellIdentityGsm.mcc.toString()
+            map["MNC"]=cellIdentityGsm.mnc.toString()
+            map["LAC"]=cellIdentityGsm.lac.toString()
+            map["RSSI"]=cellSignalGsm.dbm.toString()
+            map["RxLev"]=cellSignalGsm.asuLevel.toString()
+            map["Level_of_strength"]=cellSignalGsm.level.toString()
+            map["type"]="2"
+        } else if (cellInfo is CellInfoLte) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                val cellIdentityLte = cellInfo.cellIdentity
+                val cellSignalLte = cellInfo.cellSignalStrength
+                map["cell_identity"] = cellIdentityLte.ci.toString()
+                map["MCC"] = cellIdentityLte.mcc.toString()
+                map["MNC"] = cellIdentityLte.mnc.toString()
+                map["TAC"] = cellIdentityLte.tac.toString()
+                map["RSRP"] = cellSignalLte.rsrp.toString()
+                map["RSRQ"] = cellSignalLte.rsrq.toString()
+                map["CINR"] = cellSignalLte.rssnr.toString()
+                map["Level_of_strength"] = cellSignalLte.level.toString()
+                map["type"] = "4"
+            }
+        } else if (cellInfo is CellInfoWcdma) {
+            val cellIdentityWcdma = cellInfo.cellIdentity
+            val cellSignalWcdma = cellInfo.cellSignalStrength
+            map["cell_identity"]=cellIdentityWcdma.cid.toString()
+            map["MCC"]=cellIdentityWcdma.mcc.toString()
+            map["MNC"]=cellIdentityWcdma.mnc.toString()
+            map["LAC"]=cellIdentityWcdma.lac.toString()
+            map["RSCP"]=cellSignalWcdma.dbm.toString()
+            map["Level_of_strength"]=cellSignalWcdma.level.toString()
+            map["type"]="3"
+        }
+        map["net_type"]=netclass
+        map["plmn"] = tm.getNetworkOperator().toString()
+        return map
+    }
+
+
+
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        if (position == 0){
+            list_position = 0
+        }
+        else if (position == 1){
+            list_position = 1
+        }
+        else if(position == 2) {
+            list_position = 2
+        }
+        else{
+            list_position = 3
+        }
+    }
+
+    override fun onNothingSelected(p0: AdapterView<*>?) {
+        TODO("Not yet implemented")
     }
 }
