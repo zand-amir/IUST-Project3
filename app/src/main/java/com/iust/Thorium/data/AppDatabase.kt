@@ -18,7 +18,7 @@ abstract class AppDatabase : RoomDatabase() {
         fun getAppDataBase(context: Context): AppDatabase? {
             if (INSTANCE == null){
                 synchronized(AppDatabase::class){
-                    INSTANCE = Room.databaseBuilder(context.applicationContext, AppDatabase::class.java, "signal_strength")
+                    INSTANCE = Room.databaseBuilder(context.applicationContext, AppDatabase::class.java, "thorium")
                         .allowMainThreadQueries()
                         .fallbackToDestructiveMigration()
                         .build()
