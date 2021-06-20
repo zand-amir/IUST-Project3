@@ -25,6 +25,7 @@ import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
+import kotlinx.android.synthetic.main.activity_map.*
 
 
 class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
@@ -309,17 +310,22 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        val mapButton : Button = findViewById(R.id.map_btn)
         if (position == 0){
             list_position = 0
+            mapButton.setText("Map\n by \n cell\n filter")
         }
         else if (position == 1){
             list_position = 1
+            mapButton.setText("Map\n by \n TAC\n filter")
         }
         else if(position == 2) {
             list_position = 2
+            mapButton.setText("Map\n by \n Gen\n filter")
         }
         else{
             list_position = 3
+            mapButton.setText("Map\n by \n PLMN\n filter")
         }
     }
 

@@ -10,7 +10,7 @@
 
     <Button
         android:id="@+id/info_button"
-        android:layout_width="100dp"
+        android:layout_width="120dp"
         android:layout_height="100dp"
         android:background="@drawable/round_btn"
         android:drawableEnd="@android:drawable/ic_menu_myplaces"
@@ -33,15 +33,28 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
+    <TextView
+        android:id="@+id/text3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="288dp"
+        android:text="Please select filter for map"
+        android:textColor="#000000"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.565"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <Button
         android:id="@+id/map_btn"
-        android:layout_width="100dp"
+        android:layout_width="120dp"
         android:layout_height="100dp"
         android:layout_marginEnd="64dp"
         android:background="@drawable/round_btn"
         android:drawableRight="@android:drawable/ic_dialog_map"
         android:drawableTint="#ECE4E4"
-        android:text="Map"
+        android:text="Map\n by \n cell\n filter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -50,7 +63,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="Number of records"
+        android:text="Number of records:"
         android:textSize="18sp"
         android:textColor="#000000"
         app:layout_constraintEnd_toEndOf="parent"
@@ -62,7 +75,7 @@
         android:id="@+id/areaspinner"
         android:layout_width="150dip"
         android:layout_height="40dip"
-        android:background="#0F0"
+        android:background="#007BFF"
         android:drawSelectorOnTop="true"
         android:padding="5dip"
         android:paddingLeft="10dip"
