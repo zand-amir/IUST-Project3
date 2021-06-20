@@ -19,7 +19,7 @@
         android:roundIcon="@mipmap/my_ic_launch_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.iust.Thorium.map_act"></activity>
+        <activity android:name="com.iust.Thorium.MapActivity"></activity>
 
 
         <!--

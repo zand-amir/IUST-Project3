@@ -77,7 +77,7 @@ class MainActivity : AppCompatActivity() {
 
         }
         Mapbutton.setOnClickListener{
-            var intent = Intent(this,map_act::class.java)
+            var intent = Intent(this,MapActivity::class.java)
             startActivity(intent)
         }
 
