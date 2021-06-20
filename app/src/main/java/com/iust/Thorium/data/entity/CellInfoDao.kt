@@ -4,19 +4,19 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
-import com.iust.Thorium.data.model.CellPower
+import com.iust.Thorium.data.model.CellInfo
 
 @Dao
 interface CellInfoDao {
-    @Query("SELECT * FROM CellPower")
-    fun getAll(): List<CellPower>
+    @Query("SELECT * FROM CellInfo")
+    fun getAll(): List<CellInfo>
 
     @Query("SELECT * FROM CellPower WHERE id IN (:infoIds)")
-    fun loadAllByIds(infoIds: IntArray): List<CellPower>
+    fun loadAllByIds(infoIds: IntArray): List<CellInfo>
 
     @Insert
-    fun insert(vararg info: CellPower)
+    fun insert(vararg info: CellInfo)
 
     @Delete
-    fun delete(power: CellPower)
+    fun delete(power: CellInfo)
 }
