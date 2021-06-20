@@ -7,7 +7,7 @@ import androidx.room.Query
 import com.iust.Thorium.data.model.CellPower
 
 @Dao
-interface CellPowerDao {
+interface CellInfoDao {
     @Query("SELECT * FROM CellPower")
     fun getAll(): List<CellPower>
 
