@@ -1,18 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.thorium">
+    package="com.iust.Thorium">
+
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+<!--    <uses-feature android:name="android.hardware.type.watch" />-->
+
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/my_ic_launch"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/my_ic_launch_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Thorium">
-        <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.Thorium.NoActionBar">
+        android:theme="@style/AppTheme">
+        <activity android:name="com.iust.Thorium.map_act"></activity>
+
+
+        <!--
+               Set to true if your app is Standalone, that is, it does not require the handheld
+               app to run.
+        -->
+<!--        <meta-data-->
+<!--            android:name="com.google.android.wearable.standalone"-->
+<!--            android:value="true" />-->
+
+        <activity android:name="com.iust.Thorium.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
