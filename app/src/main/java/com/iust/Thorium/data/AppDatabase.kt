@@ -4,13 +4,13 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.iust.Thorium.data.entity.CellInfoDao
-import com.iust.thorium.data.model.CellInfo
+import com.iust.thorium.data.entity.CellInformationDao
+import com.iust.thorium.data.model.CellInformation
 
 
-@Database(entities = arrayOf(CellInfo::class), version = 2)
+@Database(entities = arrayOf(CellInformation::class), version = 2)
 abstract class AppDatabase : RoomDatabase() {
-    abstract fun cellPowerDao(): CellInfoDao
+    abstract fun cellPowerDao(): CellInformationDao
 
     companion object {
         var INSTANCE: AppDatabase? = null
@@ -18,7 +18,7 @@ abstract class AppDatabase : RoomDatabase() {
         fun getAppDataBase(context: Context): AppDatabase? {
             if (INSTANCE == null){
                 synchronized(AppDatabase::class){
-                    INSTANCE = Room.databaseBuilder(context.applicationContext, AppDatabase::class.java, "thorium")
+                    INSTANCE = Room.databaseBuilder(context.applicationContext, AppDatabase::class.java, "signal_strength")
                         .allowMainThreadQueries()
                         .fallbackToDestructiveMigration()
                         .build()

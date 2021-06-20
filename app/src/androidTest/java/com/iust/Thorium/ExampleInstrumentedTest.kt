@@ -1,4 +1,4 @@
-package com.iust.Thorium
+package com.iust.thorium
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

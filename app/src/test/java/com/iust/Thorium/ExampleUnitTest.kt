@@ -1,4 +1,4 @@
-package com.iust.Thorium
+package com.iust.thorium
 
 import org.junit.Test
 
