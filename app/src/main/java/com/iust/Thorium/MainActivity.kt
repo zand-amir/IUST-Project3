@@ -89,6 +89,61 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         }
     }
 
+    private fun getinfo(){
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            permissiongranter()
+        }
+        var ci1 = tm.allCellInfo
+        val out = getCellInfo(ci1.get(0))
+        var my_info : CellInformation
+        if (out["type"]=="2"){
+            my_info = CellInformation(
+                latitude = latitude,
+                longitude = longitude,
+                cell_identity = out["cell_identity"],
+                MCC = out["MCC"],
+                MNC = out["MNC"],
+                plmn = out["plmn"],
+                net_type = out["net_type"],
+                LAC = out["LAC"],
+                type=2
+            )
+        }else if (out["type"]=="3"){
+            my_info = CellInformation(
+                latitude = latitude,
+                longitude = longitude,
+                cell_identity = out["cell_identity"],
+                MCC = out["MCC"],
+                MNC = out["MNC"],
+                plmn = out["plmn"],
+                net_type = out["net_type"],
+                LAC = out["LAC"],
+                type =3
+            )
+        }else{
+            my_info = CellInformation(
+                latitude = latitude,
+                longitude = longitude,
+                cell_identity = out["cell_identity"],
+                MCC = out["MCC"],
+                MNC = out["MNC"],
+                plmn = out["plmn"],
+                net_type = out["net_type"],
+                TAC = out["TAC"],
+                type = 4
+            )
+        }
+        val records : TextView = findViewById(R.id.record_size_text)
+        db?.cellPowerDao()?.insert(my_info)
+        var my_info2 = db?.cellPowerDao()?.getAll()
+        record_size = my_info2!!.size
+        records.text = "Number of records : " + record_size.toString()
+    }
+
     private fun permissiongranter() {
         Dexter.withContext(this)
             .withPermissions(
