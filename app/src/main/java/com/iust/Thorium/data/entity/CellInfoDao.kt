@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
-import com.iust.Thorium.data.model.CellInfo
+import com.iust.thorium.data.model.CellInfo
 
 @Dao
 interface CellInfoDao {
