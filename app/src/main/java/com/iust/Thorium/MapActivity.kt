@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
 import android.preference.PreferenceManager
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -20,6 +21,7 @@ import org.osmdroid.views.overlay.compass.InternalCompassOrientationProvider
 import org.osmdroid.views.overlay.gestures.RotationGestureOverlay
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 import java.util.*
+import kotlin.math.log
 
 
 class MapActivity : AppCompatActivity() {
@@ -130,7 +132,7 @@ class MapActivity : AppCompatActivity() {
                         else {
                             if (!tacMap.isEmpty()) {
                                 if (use_new_color) {
-                                    color_index = (old_color_index + 1) % 10
+                                    color_index = (old_color_index + 6) % 10
                                     use_new_color = false
                                 } else {
                                     color_index = (color_index + 1) % 10
