@@ -132,7 +132,7 @@ class MapActivity : AppCompatActivity() {
                         else {
                             if (!tacMap.isEmpty()) {
                                 if (use_new_color) {
-                                    color_index = (old_color_index + 6) % 10
+                                    color_index = (old_color_index + 2) % 10
                                     use_new_color = false
                                 } else {
                                     color_index = (color_index + 1) % 10

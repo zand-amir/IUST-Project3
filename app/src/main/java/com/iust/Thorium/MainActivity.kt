@@ -149,9 +149,14 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             lastLoc.longitude = longitude
             val distance = mLastLocation.distanceTo(lastLoc)
             Log.i("distance", "distance is $distance")
-            isNewLocation = distance > 10
-            latitude = mLastLocation.latitude
-            longitude= mLastLocation.longitude
+            if(distance > 10){
+                isNewLocation = true
+                latitude = mLastLocation.latitude
+                longitude = mLastLocation.longitude
+            }
+            else{
+                isNewLocation = false
+            }
         }
     }
 
