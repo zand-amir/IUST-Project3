@@ -26,6 +26,7 @@ import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import kotlinx.android.synthetic.main.activity_map.*
+import kotlin.math.log
 
 
 class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
@@ -35,7 +36,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
     lateinit var tm : TelephonyManager
     private var db: AppDatabase? = null
     var handler: Handler = Handler()
-    val delayer = 700
+    val delayer = 500
     lateinit var mFusedLocationClient: FusedLocationProviderClient
     var latitude : Double = 35.0
     var longitude : Double = 40.0
@@ -43,6 +44,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
     lateinit var cm: ConnectivityManager
     lateinit var spinner: Spinner
     var list_position: Int = 0
+    var isNewLocation = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,7 +88,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
         handler.postDelayed(object : Runnable {
             override fun run() {
-                if (repeat == 1){
+                if (repeat == 1 && isNewLocation){
                     getinfo()
                 }
                 handler.postDelayed(this, delayer.toLong())
@@ -94,6 +96,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         }, delayer.toLong())
 
     }
+
 
     override fun onPause() {
         super.onPause()
@@ -141,6 +144,12 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
     private val mLocationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult) {
             var mLastLocation: Location = locationResult.lastLocation
+            var lastLoc = Location("A")
+            lastLoc.latitude = latitude
+            lastLoc.longitude = longitude
+            val distance = mLastLocation.distanceTo(lastLoc)
+            Log.i("distance", "distance is $distance")
+            isNewLocation = distance > 10
             latitude = mLastLocation.latitude
             longitude= mLastLocation.longitude
         }
@@ -198,7 +207,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         db?.cellPowerDao()?.insert(my_info)
         var my_info2 = db?.cellPowerDao()?.getAll()
         record_size = my_info2!!.size
-        records.text = "Number of records : " + record_size.toString()
+        records.text = "Number of records : " + (record_size).toString()
     }
 
     private fun permissiongranter() {
